@@ -14,6 +14,6 @@ router = APIRouter()
 async def load_environmental_data():
     logger.info("Start loading global land temperatures")
     load_global_land_temperatures()
-    logger.info("Start loading country land temperatures")
-    load_country_land_temperatures()
+    # logger.info("Start loading country land temperatures")
+    # load_country_land_temperatures()
     return "Success"

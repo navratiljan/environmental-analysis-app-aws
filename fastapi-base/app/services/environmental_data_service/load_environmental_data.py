@@ -13,9 +13,11 @@ dynamodb_table = os.environ["DYNAMODB_TABLE"]
 
 def load_global_land_temperatures():
     try:
-        dataset_bucket.download_file(
-            "datasets/GlobalTemperatures.csv", "/tmp/GlobalTemperatures.csv"
-        )
+        # dataset_bucket.download_file(
+        #     "datasets/GlobalTemperatures.csv", "/tmp/GlobalTemperatures.csv"
+        # )
+        for my_bucket_object in dataset_bucket.objects.all():
+            print(my_bucket_object)
     except Exception as e:
         raise Exception(f"S3 bucket download fil faied with errro {e}")
 
