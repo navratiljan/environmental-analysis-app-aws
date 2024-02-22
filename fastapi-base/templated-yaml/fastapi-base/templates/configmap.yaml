@@ -1,0 +1,21 @@
+---
+# Source: fastapi-base/templates/configmap.yaml
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: api-env-configmap
+  namespace: niumad-staging-helm
+  labels:
+    app.deloittece.com/deployer: ghactions
+data:
+  env: |
+    # Database
+    DB_HOST=niumad-db-stg-onezone.mysql.database.azure.com
+    DB_USER=stg01-niumad-app
+    DB_NAME=stg01-niumad
+    DB_CACHE=Doctrine\Common\Cache\VoidCache
+    DB_SSL=true
+    DB_SSL_CA=NULL
+    DB_SSL_CERT=NULL
+    DB_SSL_KEY=NULL
+    DB_SSL_VERIFY=false

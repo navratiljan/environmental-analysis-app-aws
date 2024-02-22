@@ -1,0 +1,20 @@
+
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ .Values.api.name }}-env-configmap
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.deloittece.com/deployer: ghactions
+data:
+  env: |
+    # Database
+    DB_HOST={{ .Values.mysql.host }}
+    DB_USER={{ .Values.mysql.user }}
+    DB_NAME={{ .Values.mysql.dbname }}
+    DB_CACHE=Doctrine\Common\Cache\VoidCache
+    DB_SSL={{ .Values.mysql.db_ssl }}
+    DB_SSL_CA={{ .Values.mysql.db_ssl_ca }}
+    DB_SSL_CERT={{ .Values.mysql.db_ssl_cert }}
+    DB_SSL_KEY={{ .Values.mysql.db_ssl_key }}
+    DB_SSL_VERIFY=false

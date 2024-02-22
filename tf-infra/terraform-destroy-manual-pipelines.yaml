@@ -1,0 +1,63 @@
+## Triggers
+trigger:
+  branches:
+    include:
+    - main
+
+pr:
+  branches:
+    include:
+    - main
+
+## Variables
+variables:
+- group: EXAMPLE-PROJECT-AWS-ENV-VARS-GENERAL
+- group: EXAMPLE-PROJECT-AWS-LOGIN-DETAILS
+- group: EXAMPLE-PROJECT-AWS-SECRETS
+- name: terraform_version
+  value: 1.6.1
+# Get source branch name for PRs as well as CI triggers  
+- ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+  - name: SOURCE_BRANCH
+    value: $(System.PullRequest.SourceBranchName) 
+- ${{ else }}:
+  - name: SOURCE_BRANCH
+    value: $(Build.SourceBranchName)
+
+## Repository references
+resources:
+  repositories:
+    - repository: templates-aws
+      type: git
+      name: CE-CZ-CNS-CLOUD-REFERENCES/ado-pipeline-templates-aws
+
+## Stages
+stages:
+- stage: Plan_and_Test
+  variables:
+  - name: ENVIRONMENT
+    value: dev
+  jobs:
+  - job: 
+    steps:
+    - script: echo "IF running branch $(SOURCE_BRANCH)" 
+      condition: eq(variables['SOURCE_BRANCH'], 'main')
+    - script: echo "ELSE running branch $(SOURCE_BRANCH)" 
+      condition: eq(variables['Build.SourceBranchName'], 'main')
+
+  - template: tf-drift-detection/template-pipeline.yaml@templates-aws
+
+  - template: tf-lint/template-pipeline.yaml@templates-aws
+
+  - template: tf-auto-tfdocs/template-pipeline.yaml@templates-aws
+
+  - template: tf-cost-estimation/template-pipeline.yaml@templates-aws
+
+  - template: tf-security-check/template-pipeline.yaml@templates-aws
+
+  - template: tf-determine-execution-permissions/template-pipeline.yaml@templates-aws
+
+  - template: tf-plan/template-pipeline.yaml@templates-aws
+    parameters:
+      terraform_version: $(terraform_version)
+

@@ -1,0 +1,89 @@
+{{- if .Values.api.workerOn }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.api.name }}-worker-deployment
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.api.name }}
+    app.deloittece.com/deployer: rancher
+    app.kubernetes.io/name: {{ .Values.api.name }}-worker
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    app.kubernetes.io/component: part-of-component
+spec:
+  something: {{ .Values.api.name}}
+  replicas: {{ .Values.api.replicas }}
+  revisionHistoryLimit: {{ .Values.api.replicas }}
+  selector:
+    matchLabels:
+      component: {{ .Values.api.name }}-worker
+  template:
+    metadata:
+      labels:
+        component: {{ .Values.api.name }}-worker
+      annotations:
+        # Generates a random number forcing deployment to restart in case of configmap changes
+        rolling-update: {{ randAlphaNum 5 | quote }} 
+    spec:
+      {{ if .Values.manipulateNodeScheduling -}}
+      nodeSelector:
+        agentpool: {{ .Values.agentPool }}
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: kubernetes.azure.com/mode
+                    operator: In
+                    values:
+                      - user
+        {{ if .Values.podAntiAffinity -}}
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: component
+                  operator: In
+                  values:
+                  - {{ .Values.api.name }}-worker
+              topologyKey: "kubernetes.io/hostname"
+        {{- end }}
+        {{- end }}
+      containers:
+      - name: {{ .Values.api.name }}
+        image: {{ .Values.registry }}/{{ .Values.api.image }}:{{ .Values.api.imageVersionTag }}
+        imagePullPolicy: Always
+        {{ if .Values.readinessProbe -}}
+        readinessProbe:
+          exec:
+            command:
+            - /bin/bash
+            - /tmp/worker-readiness.sh
+          failureThreshold: 1
+          periodSeconds: 1
+          successThreshold: 1
+          timeoutSeconds: 1
+        {{- end }}
+        resources:
+{{ toYaml .Values.api.resources | indent 10 }}
+        volumeMounts:
+          - name: temp-files
+            mountPath: /tmppp
+          - name: shared-files
+            mountPath: /shared
+        env:
+          - name: HRE_API_PASSWORD
+            value: someDummyValue
+      - name: temp-files
+        emptyDir: {}
+      - name: shared-files
+        emptyDir: { }
+      - name: env-config-volume
+        configMap:
+          name: api-env-configmap
+{{- end}}

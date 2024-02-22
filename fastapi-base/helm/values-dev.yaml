@@ -1,0 +1,54 @@
+namespace: niumad-staging-helm
+registry: dceniumad.azurecr.io
+
+agentPool: somepool
+
+api:
+  name: api 
+  image: 'niumad-api-new'
+  imageVersionTag: <IMAGE-TAG> #This is injected in the CI pipeline
+  replicas: 2
+
+  # Resource requests and limits for the api pod
+  resources:
+    limits:
+      memory: 1000Mi
+    requests:
+      cpu: 50m
+      memory: 100Mi
+
+# scaling configuration
+hpa:
+  enabled: true #if set to false hpa will not be enabled and below settings do not matter
+  cpuScalingEnable: false
+  memoryScalingEnable: true
+  maxReplicas: 20
+  minReplicas: 2
+  cpuAverageUtilization: 100
+  memoryAverageUtilization: 350
+  stabilizationWindowSeconds: 30
+
+# Scheduling
+manipulateNodeScheduling: false
+podAntiAffinity: true
+
+# Storage settings for documents
+storage:
+  pvName: azure-file-pv-documents-stg-01
+  pvSize: 10Gi
+  pvcSize: 10Gi
+  documentsShareName: kubernetes-dynamic-pvc-ece18e1a-99d3-42ab-bd86-13a0bc38cba4
+
+# mysql connection settings
+mysql:
+  host: niumad-db-stg-onezone.mysql.database.azure.com
+  user: stg01-niumad-app
+  passwordSecret: stg01-niumad-app
+  dbname: stg01-niumad
+  publicServiceIp:
+  db_ssl: true
+  db_ssl_ca: "NULL"
+  db_ssl_cert: "NULL"
+  db_ssl_key: "NULL"
+
+readinessProbe: true

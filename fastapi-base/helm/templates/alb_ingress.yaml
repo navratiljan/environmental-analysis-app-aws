@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+  name: rancher-exec
+  namespace: cattle-system
+
+spec:
+   ingressClassName: nginx 
+   rules:
+    - host: 'fastapi-infra-template.ceacpoc.cloud'
+      http:
+        paths:
+        - pathType: ImplementationSpecific
+          backend: 
+            service:
+              name: rancher
+              port:
+                number: 80

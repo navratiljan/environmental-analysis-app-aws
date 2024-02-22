@@ -1,0 +1,26 @@
+---
+# Source: fastapi-base/templates/hpa.yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: api-deployment-hpa
+  namespace: niumad-staging-helm
+spec:
+  maxReplicas: 20
+  minReplicas:  2
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: api-deployment
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 30
+  metrics:
+     
+  
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 350
