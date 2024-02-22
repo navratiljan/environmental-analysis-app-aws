@@ -4,20 +4,18 @@ from decimal import Decimal
 import pandas as pd
 from app.logger import logger
 
-boto3.setup_default_session(profile_name=os.environ["AWS_SESSION_NAME"])
+session = boto3.Session(profile_name="DT_AIDA_001", region_name="eu-central-1")
 s3_bucket_name = os.environ["S3_DATASETS_BUCKET_NAME"]
-s3_resource = boto3.resource("s3")
+s3_resource = session.resource("s3")
 dataset_bucket = s3_resource.Bucket(s3_bucket_name)
 
 dynamodb_table = os.environ["DYNAMODB_TABLE"]
 
 def load_global_land_temperatures():
     try:
-        # dataset_bucket.download_file(
-        #     "datasets/GlobalTemperatures.csv", "/tmp/GlobalTemperatures.csv"
-        # )
-        for my_bucket_object in dataset_bucket.objects.all():
-            print(my_bucket_object)
+        dataset_bucket.download_file(
+            "datasets/GlobalTemperatures.csv", "/tmp/GlobalTemperatures.csv"
+        )
     except Exception as e:
         raise Exception(f"S3 bucket download fil faied with errro {e}")
 
@@ -35,12 +33,13 @@ def load_global_land_temperatures():
     # Set date as index and convert to dict
     global_month_dict = df.set_index("dt").to_dict()
 
-    dynamo_db = boto3.resource("dynamodb", region_name="eu-central-1")
+    dynamo_db = session.resource("dynamodb", region_name="eu-central-1")
     dynamo_table = dynamo_db.Table(dynamodb_table)
     try:
         dynamo_table.put_item(
             Item={"pk": "Global", "Global": global_month_dict["LandAverageTemperature"]}
         )
+        logger.info('Items uploaded to DynamoDB')
     except Exception as e:
         raise Exception(
             f"Upload of country temperature to dynamodb mapping failed with error {e}"
@@ -73,7 +72,7 @@ def load_country_land_temperatures():
         .to_dict()
     )
 
-    dynamo_db = boto3.resource("dynamodb", region_name="eu-central-1")
+    dynamo_db = session.resource("dynamodb", region_name="eu-central-1")
     dynamo_table = dynamo_db.Table(dynamodb_table)
     for country in country_month_dict.keys():
         logger.info(f"Inserting records for {country} into DYnamoDB")
