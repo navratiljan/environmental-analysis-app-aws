@@ -2,7 +2,7 @@ import logging
 from typing import Union 
 from fastapi import FastAPI
 
-from .routers import environmental_data_router, item_router
+from app.routers import environmental_data_router, item_router
 
 
 app = FastAPI()
