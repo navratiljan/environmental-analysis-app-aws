@@ -25,13 +25,15 @@ async def get_environmental_data_global_specific(date_filter: Optional[str] = No
     res = get_environmental_data_global(date_filter)
     return res
 
-@router.get("/environmental-data/countries/list")
-async def list_all_countries_environmental_data():
-    logger.info("Start getting list of countries")
-    return 'x'
 
 @router.get("/environmental-data/countries/{country}")
 async def get_environmental_data_country_specific(country: str, date_filter: Optional[str] = None):
     logger.info(f"Start getting land temperatures for {country} with date filter {date_filter}")
     res = get_environmental_data_for_country(country, date_filter)
+    return res
+
+@router.get("/environmental-data/countries/")
+async def list_countries():
+    logger.info(f"Listing all countries")
+    res = get_countries_list()
     return res

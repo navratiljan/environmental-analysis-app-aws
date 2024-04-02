@@ -1,4 +1,5 @@
 import os
+import botocore
 import boto3
 from decimal import Decimal
 import pandas as pd
@@ -91,6 +92,7 @@ def load_country_land_temperatures():
             )
 
     try:
+        logger.info(f"Inserting countries list")
         dynamo_table.put_item(
             Item={
                 "pk": "countries_list",

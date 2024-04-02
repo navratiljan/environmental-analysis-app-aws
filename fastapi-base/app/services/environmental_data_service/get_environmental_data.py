@@ -47,8 +47,14 @@ def get_environmental_data_global(date: Optional[str] | None = None):
     )
     global_temperature_values = response['Item']['Global']
     environmental_data_res = filter_environmental_data_date(global_temperature_values, date)
-    return global_temperature_values
+    return environmental_data_res
 
-
-def list_countries():
-    response = dynamo_table.
+def get_countries_list():
+    response = dynamo_table.get_item(
+        Key={
+            'pk': 'countries_list'
+        }
+    )
+    list_countries = response['Item']['countries_list']
+    environmental_data_res = convert_decimals(list_countries)
+    return environmental_data_res
