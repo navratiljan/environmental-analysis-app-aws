@@ -5,8 +5,8 @@ import logging
 
 from app.logger import logger
 from app.schemas import Item
-from app.services.environmental_data_service.load_environmental_data import * 
-from app.services.environmental_data_service.get_environmental_data import * 
+from app.services.environmental_data_service.load_environmental_data import *
+from app.services.environmental_data_service.get_environmental_data import *
 
 router = APIRouter()
 
@@ -19,6 +19,7 @@ async def load_environmental_data():
     load_country_land_temperatures()
     return "Success"
 
+
 @router.get("/environmental-data/global")
 async def get_environmental_data_global_specific(date_filter: Optional[str] = None):
     logger.info(f"Start getting land temperatures with date filter {date_filter}")
@@ -27,10 +28,15 @@ async def get_environmental_data_global_specific(date_filter: Optional[str] = No
 
 
 @router.get("/environmental-data/countries/{country}")
-async def get_environmental_data_country_specific(country: str, date_filter: Optional[str] = None):
-    logger.info(f"Start getting land temperatures for {country} with date filter {date_filter}")
+async def get_environmental_data_country_specific(
+    country: str, date_filter: Optional[str] = None
+):
+    logger.info(
+        f"Start getting land temperatures for {country} with date filter {date_filter}"
+    )
     res = get_environmental_data_for_country(country, date_filter)
     return res
+
 
 @router.get("/environmental-data/countries/")
 async def list_countries():

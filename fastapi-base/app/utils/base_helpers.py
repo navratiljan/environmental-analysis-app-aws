@@ -1,6 +1,6 @@
-
 from decimal import Decimal
 from boto3.dynamodb.types import TypeDeserializer, TypeSerializer
+
 
 def convert_dynamo_obj_to_python_obj(dynamo_obj: dict) -> dict:
     deserializer = TypeDeserializer()

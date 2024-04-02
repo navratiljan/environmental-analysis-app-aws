@@ -12,6 +12,7 @@ dataset_bucket = s3_resource.Bucket(s3_bucket_name)
 
 dynamodb_table = os.environ["DYNAMODB_TABLE"]
 
+
 def load_global_land_temperatures():
     try:
         dataset_bucket.download_file(
@@ -40,7 +41,7 @@ def load_global_land_temperatures():
         dynamo_table.put_item(
             Item={"pk": "Global", "Global": global_month_dict["LandAverageTemperature"]}
         )
-        logger.info('Items uploaded to DynamoDB')
+        logger.info("Items uploaded to DynamoDB")
     except Exception as e:
         raise Exception(
             f"Upload of country temperature to dynamodb mapping failed with error {e}"
@@ -94,14 +95,9 @@ def load_country_land_temperatures():
     try:
         logger.info(f"Inserting countries list")
         dynamo_table.put_item(
-            Item={
-                "pk": "countries_list",
-                "countries_list": list_of_countries
-            }
+            Item={"pk": "countries_list", "countries_list": list_of_countries}
         )
     except Exception as e:
         raise Exception(
             f"Upload of country temperature to dynamodb mapping failed with error {e}"
         )
-
-        

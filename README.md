@@ -5,5 +5,5 @@ uvicorn app.main:app --reload
 - import variables from .env
 
 ```bash
-set -o allexport && source .localsecrets.env && set +o allexport
+set -o allexport && source .env.development && set +o allexport
 ```

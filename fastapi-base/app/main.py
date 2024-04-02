@@ -1,5 +1,5 @@
 import logging
-from typing import Union 
+from typing import Union
 from fastapi import FastAPI
 
 from app.routers import environmental_data_router, item_router
