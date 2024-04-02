@@ -74,8 +74,10 @@ def load_country_land_temperatures():
 
     dynamo_db = session.resource("dynamodb", region_name="eu-central-1")
     dynamo_table = dynamo_db.Table(dynamodb_table)
+    list_of_countries = []
     for country in country_month_dict.keys():
         logger.info(f"Inserting records for {country} into DYnamoDB")
+        list_of_countries.append(country)
         try:
             dynamo_table.put_item(
                 Item={
@@ -87,3 +89,17 @@ def load_country_land_temperatures():
             raise Exception(
                 f"Upload of country temperature to dynamodb mapping failed with error {e}"
             )
+
+    try:
+        dynamo_table.put_item(
+            Item={
+                "pk": "countries_list",
+                "countries_list": list_of_countries
+            }
+        )
+    except Exception as e:
+        raise Exception(
+            f"Upload of country temperature to dynamodb mapping failed with error {e}"
+        )
+
+        

@@ -50,14 +50,5 @@ def get_environmental_data_global(date: Optional[str] | None = None):
     return global_temperature_values
 
 
-def get_environmental_data_all_countries(date: Optional[str] | None = None):
-    # Perform the scan operation
-    dynamodb_client = session.client("dynamodb")
-    logger.debug('Start SCAN of DynamoDB table to get all keys except Global')
-    response = dynamodb_client.scan(TableName=os.environ["DYNAMODB_TABLE"], Limit=10000)
-    logger.debug('Finished SCAN of DynamoDB table to get all keys except Global')
-    countries_temperature_values = response['Items'][0]
-    environmental_data_res = convert_dynamo_obj_to_python_obj(
-        countries_temperature_values
-    )
-    return environmental_data_res
+def list_countries():
+    response = dynamo_table.
