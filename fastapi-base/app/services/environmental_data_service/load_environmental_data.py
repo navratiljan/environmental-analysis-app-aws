@@ -5,7 +5,7 @@ from decimal import Decimal
 import pandas as pd
 from app.logger import logger
 
-session = boto3.Session(profile_name="DT_AIDA_001", region_name="eu-central-1")
+session = boto3.Session(region_name="eu-central-1")
 s3_bucket_name = os.environ["S3_DATASETS_BUCKET_NAME"]
 s3_resource = session.resource("s3")
 dataset_bucket = s3_resource.Bucket(s3_bucket_name)

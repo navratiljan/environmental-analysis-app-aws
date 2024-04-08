@@ -1,0 +1,5 @@
+region="eu-central-1"
+environment="prod"
+project_name="exampleproject"
+postgres_user= "postgresuserprod"
+another_non_secret_variable="prod-somevalue"

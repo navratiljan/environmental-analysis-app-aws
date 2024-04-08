@@ -7,11 +7,11 @@ import boto3
 from boto3 import dynamodb
 from app.logger import logger
 
-session = boto3.Session(profile_name="DT_AIDA_001", region_name="eu-central-1")
+session = boto3.Session(region_name="eu-central-1")
 dynamodb_table = os.environ["DYNAMODB_TABLE"]
 
 # TODO restructure DynamoDB so it loads countries/country and adjust queries so its possible to query all coutries
-# TODO sort this by date
+# TODO sort this by date 
 
 dynamo_db = session.resource("dynamodb", region_name="eu-central-1")
 dynamo_table = dynamo_db.Table(dynamodb_table)
