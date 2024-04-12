@@ -1,3 +1,6 @@
+# TODOS
+- TODO limit CIDR blocks to private ones
+
 This repository represents a template for starting a terraform based project in **Azure**.
 You should copy this template and use it as a basline for your project
 

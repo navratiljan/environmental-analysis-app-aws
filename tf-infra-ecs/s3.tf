@@ -1,32 +1,32 @@
 # Commented out example ##
-
-
 resource "aws_s3_bucket" "alb_logs" {
-  bucket = "${var.project_name}-s3-alb-logs-${var.environment}-01"
+  bucket = "my-elb-tf-test-bucket"
 }
 
-data "aws_iam_policy_document" "alb_logs" {
-  statement {
-    sid       = ""
-    effect    = "Allow"
-    resources = ["arn:aws:s3:::${aws_s3_bucket.alb_logs.bucket}/*"]
-    actions   = ["s3:PutObject"]
+resource "aws_s3_bucket_server_side_encryption_configuration" "alb_logs" {
+  bucket = aws_s3_bucket.alb_logs.bucket
 
-    principals {
-      type        = "Service"
-      identifiers = ["logdelivery.elasticloadbalancing.amazonaws.com"]
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
     }
-  } 
-}
-resource "aws_s3_bucket_policy" "alb_logs_policy" {
-  policy = data.aws_iam_policy_document.alb_logs.json
-  bucket = aws_s3_bucket.alb_logs.id
-}
-
-resource "aws_s3_bucket_versioning" "versioning_example-bucket" {
-  bucket = aws_s3_bucket.alb_logs.id
-  versioning_configuration {
-    status = "Enabled"
   }
 }
 
+resource "aws_s3_bucket_policy" "alb_logs" {
+  bucket = aws_s3_bucket.alb_logs.bucket
+
+  policy = jsonencode({
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::054676820928:root"
+      },
+      "Action": "s3:PutObject",
+      "Resource": "${aws_s3_bucket.alb_logs.arn}/*"
+    }
+  ]
+})
+}

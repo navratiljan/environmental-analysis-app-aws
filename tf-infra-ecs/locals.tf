@@ -11,7 +11,6 @@ locals {
 }
 locals {
   account_id = data.aws_caller_identity.current.account_id
-  name            = "ex-${replace(basename(path.cwd), "_", "-")}"
   cluster_version = "1.27"
 
   vpc_cidr = "10.0.0.0/16"

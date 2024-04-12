@@ -18,24 +18,3 @@ variable "another_non_secret_variable" {
   description = "Dummy non-secret variable"
   type        = string
 }
-
-variable "eks_disk_size" {
-  description = "Disk size for EKS nodes"
-  type        = number
-  default     = 100
-}
-
-variable "eks_node_group_instance_role_name" {
-  description = "IAM role name for EKS node group"
-  type        = string
-  default     = "eks_node_group_instance_role"
-}
-
-
-
-
-
-
-
-
-
