@@ -10,7 +10,7 @@ locals {
   infix = "${var.project_name}-${var.environment}"
 }
 locals {
-  account_id = data.aws_caller_identity.current.account_id
+  account_id      = data.aws_caller_identity.current.account_id
   cluster_version = "1.27"
 
   vpc_cidr = "10.0.0.0/16"

@@ -4,6 +4,7 @@
 
 *.localsecret.env
 *.localpipeline*
+*backend.tf
 
 # .tfstate files
 *.tfstate
