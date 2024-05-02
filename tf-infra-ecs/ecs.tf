@@ -32,10 +32,10 @@ resource "aws_ecs_task_definition" "app" {
         value = "table-environmental-dataset-fastapi"
       }
     ]
-      log_configuration = {
-        log_driver = "awslogs"
+      logConfiguration = {
+        logDriver = "awslogs"
         options    = {
-          "awslogs-group"         = "/ecs/fastapi"
+          "awslogs-group"         = "${aws_cloudwatch_log_group.ecs_fastapi.name}"
           "awslogs-region"        = "eu-central-1"
           "awslogs-stream-prefix" = "ecs"
         }
