@@ -1,3 +1,3 @@
-output "tets_output" {
-  value = module.vpc.public_subnets
+output "test_output" {
+  value = local.test
 }

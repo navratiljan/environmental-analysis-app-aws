@@ -1,5 +1,5 @@
 resource "aws_acm_certificate" "cert" {
-  domain_name       = aws_route53_record.alb_cname.fqdn
+  domain_name       = "${aws_route53_record.alb_cname.name}.${aws_route53_zone.primary.name}"
   validation_method = "DNS"
 
   lifecycle {
