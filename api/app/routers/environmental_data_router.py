@@ -21,7 +21,7 @@ async def load_environmental_data():
     return "Success"
 
 
-@router.get("/environemntal-data/dashboard")
+@router.get("/environemental-data/dashboard-embedded-url")
 async def get_envrionmental_data_dashboard():
     logger.info(f"Start getting dashboard")
     res = get_quicksight_dashboard_url()

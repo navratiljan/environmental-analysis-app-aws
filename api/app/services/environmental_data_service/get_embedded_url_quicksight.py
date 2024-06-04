@@ -1,6 +1,7 @@
 import boto3
 
-client = boto3.client('quicksight')
+session = boto3.Session(region_name="eu-central-1")
+client = session.client('quicksight')
 
 
 def get_quicksight_dashboard_url():

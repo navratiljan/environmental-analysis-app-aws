@@ -1,56 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Console Embedding Example</title>
-    <script
-        src="https://unpkg.com/amazon-quicksight-embedding-sdk@2.0.0/dist/quicksight-embedding-js-sdk.min.js"></script>
-    <script type="text/javascript">
-        const embedSession = async () => {
-            const {
-                createEmbeddingContext,
-            } = QuickSightEmbedding;
-
-            const embeddingContext = await createEmbeddingContext({
-                onChange: (changeEvent, metadata) => {
-                    console.log('Context received a change', changeEvent, metadata);
-                },
-            });
-
-            const frameOptions = {
-                url: "https://eu-central-1.quicksight.aws.amazon.com/sn/accounts/812222239604/dashboards/70e99648-2579-4784-9f6f-d6056bdff9d8?directory_alias=jnavratil", // replace this value with the url generated via embedding API
-                container: '#experience-container',
-                height: "700px",
-                width: "1000px",
-                onChange: (changeEvent, metadata) => {
-                    switch (changeEvent.eventName) {
-                        case 'FRAME_MOUNTED': {
-                            console.log("Do something when the experience frame is mounted.");
-                            break;
-                        }
-                        case 'FRAME_LOADED': {
-                            console.log("Do something when the experience frame is loaded.");
-                            break;
-                        }
-                    }
-                },
-            };
-
-            const contentOptions = {
-                onMessage: async (messageEvent, experienceMetadata) => {
-                    switch (messageEvent.eventName) {
-                        case 'ERROR_OCCURRED': {
-                            console.log("Do something when the embedded experience fails loading.");
-                            break;
-                        }
-                    }
-                }
-            };
-            const embeddedConsoleExperience = await embeddingContext.embedConsole(frameOptions, contentOptions);
-        };
-    </script>
+    <meta charset="UTF-8">
+    <title>QuickSight Dashboard</title>
 </head>
+<body>
+    <h1>QuickSight dashboard with temperature data overview</h1>
+    <div id="dashboardLinkContainer"><button id="openDashboard">Open Dashboard</button></div>
 
-<body onload="embedSession()">
-    <div id="experience-container"></div>
+    <script src="dashboard.js"></script>
 </body>
 </html>
