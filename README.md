@@ -1,4 +1,6 @@
 # environmental-app-analysis-aws-fastapi-app
+Try the API deployed in AWS through swagger interface on URL: https://envstats.navaws.ceacpoc.cloud/docs
+
 ## Local startup
 uvicorn app.main:app --reload
 

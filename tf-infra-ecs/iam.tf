@@ -100,7 +100,7 @@ resource "aws_iam_policy" "quicksight_policy" {
         },
         {
             "Action": "quicksight:GetDashboardEmbedUrl",
-            "Resource": "arn:aws:quicksight:us-west-2:854359XXXXXX:dashboard/d3d6a645-74c7-49a3-9d64-06b12f2d9f74",
+            "Resource": "arn:aws:quicksight:eu-central-1:812222239604:dashboard/70e99648-2579-4784-9f6f-d6056bdff9d8",
             "Effect": "Allow"
         },
         {
