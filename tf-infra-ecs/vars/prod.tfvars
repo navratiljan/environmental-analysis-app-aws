@@ -13,7 +13,6 @@ ecs_app_config = {
     container_desired_count = 1
     environment_variables = []
     sg_inbound_cidr_block = ""
-    ecr_image_tag = "0.0.3"
   }
   ens-fe = {
     container_cpu = 1
@@ -23,6 +22,5 @@ ecs_app_config = {
     container_desired_count = 1
     environment_variables = []
     sg_inbound_cidr_block = ""
-    ecs_image_tag = "0.0.3"
   }
 }

@@ -35,7 +35,7 @@ resource "aws_iam_role" "ecs_task_role" {
     {
       "Effect": "Allow",
       "Principal": {
-        "Service": "ecs-tasks.amazonaws.com"
+        "Service": ["ecs-tasks.amazonaws.com", "quicksight.amazonaws.com"]
       },
       "Action": "sts:AssumeRole"
     }
@@ -46,9 +46,9 @@ EOF
 
 
 resource "aws_iam_policy" "ecspolicy" {
-    name        = "ecs-task-custom-policy"
-    description = "ECS Task Policy"
-    policy      = <<EOF
+  name        = "ecs-task-custom-policy"
+  description = "ECS Task Policy"
+  policy      = <<EOF
 {
    "Version": "2012-10-17",
    "Statement": [
@@ -87,9 +87,9 @@ resource "aws_iam_role_policy_attachment" "ecs_task_role_policy_s3" {
 
 
 resource "aws_iam_policy" "quicksight_policy" {
-    name        = "ecs-fe-quicksight-policy"
-    description = "ECS Task Policy"
-    policy      = <<EOF
+  name        = "ecs-fe-quicksight-policy"
+  description = "ECS Task Policy"
+  policy      = <<EOF
 {
     "Version": "2012-10-17",
     "Statement": [

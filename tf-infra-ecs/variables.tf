@@ -18,3 +18,8 @@ variable "another_non_secret_variable" {
   description = "Dummy non-secret variable"
   type        = string
 }
+
+variable "ecs_app_config" {
+  type    = map(any)
+  default = {}
+}
