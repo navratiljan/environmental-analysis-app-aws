@@ -8,7 +8,7 @@ module "ecs-apps" {
 
   infix            = local.infix
   region           = var.region
-  application_name = var.ecs_app_config[each.key].application_name
+  application_name = each.key
 
   # App container definition
   container_cpu         = try(var.ecs_app_config[each.key].container_cpu, 2)
@@ -35,11 +35,10 @@ module "ecs-apps" {
   ## Public expose via ALB (if is_public_service is false, below options are irrelevant)
   is_public_service = true
   base_dns_name = "navaws.ceacpoc.cloud" # fqdn is <application-name>.navaws.ceacpoc.cloud
-  alb_arn = module.alb.alb_arn
-  alb_cname = module.alb.alb_dns_name
+  alb_arn = aws_lb.public-lb.arn
+  public_alb_dnsname = aws_lb.public-lb.dns_name
 
   # IAM
   execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
   task_role_arn      = aws_iam_role.ecs_task_role.arn
-
 }

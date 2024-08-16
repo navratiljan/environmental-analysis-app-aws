@@ -114,3 +114,8 @@ variable "is_public_service" {
   type        = bool
   default     = false
 }
+
+variable "public_alb_dnsname" {
+  description = "DNS name of the public ALB"
+  type        = string
+}

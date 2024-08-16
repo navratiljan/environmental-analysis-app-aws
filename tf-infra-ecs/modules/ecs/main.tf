@@ -51,7 +51,7 @@ module "aws_ecs_sg" {
 }
 
 resource "aws_lb_target_group" "ecs" {
-  name        = "${local.base_name}-ecs-tg"
+  name        = "${var.application_name}-ecs-tg"
   port        = 80
   protocol    = "HTTP"
   target_type = "ip"
