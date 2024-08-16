@@ -1,3 +1,4 @@
+#TODO dedicated provider in one account
 ### SSM Secure strings ###
 # These are usually static secret values that don't need to be rotated and don't have a lifecycle
 # data "aws_ssm_parameter" "example_secret" {

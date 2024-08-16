@@ -2,6 +2,7 @@
 # Second part of try is the default value if the key is not found in config
 # f.e try(var.ecs_app_config[each.key].container_desired_count, 1) -> means by default it will be 1 desired count
 
+### ECS APPS ###
 module "ecs-apps" {
   for_each = { for ecs_app, conf in var.ecs_app_config : ecs_app => conf }
   source   = "./modules/ecs"
@@ -42,3 +43,35 @@ module "ecs-apps" {
   execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
   task_role_arn      = aws_iam_role.ecs_task_role.arn
 }
+
+## VPC ##
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "~> 4.0"
+
+  name = "${local.infix}-vpc"
+  cidr = local.vpc_cidr
+
+  azs             = local.azs
+  private_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 4, k)]
+  public_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 48)]
+  intra_subnets   = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 52)]
+
+  enable_nat_gateway     = true
+  single_nat_gateway     = true
+  enable_ipv6            = false
+  create_egress_only_igw = true
+
+
+  public_subnet_tags = {
+    "kubernetes.io/role/elb" = 1
+  }
+
+  private_subnet_tags = {
+    "kubernetes.io/role/internal-elb" = 1
+  }
+
+  tags = local.tags
+}
+
+## TODO: ALB ##
