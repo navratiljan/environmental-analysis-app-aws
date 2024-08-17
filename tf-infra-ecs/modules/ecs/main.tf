@@ -4,9 +4,7 @@ resource "aws_cloudwatch_log_group" "ecs" {
 
 ## ECR ##
 resource "aws_ecr_repository" "app" {
-  #TODO change this
-  #name                 = "${var.application_name}-fe-ecr"
-  name = "exampleproject-prod-ecr"
+  name                 = "${var.application_name}"
   image_tag_mutability = "MUTABLE"
 
   image_scanning_configuration {

@@ -104,9 +104,8 @@ variable "alb_arn" {
   default = ""
 }
 
-variable "base_dns_name" {
-  description = "DNS name for the application"
-  type        = string
+variable "aws_route53_zone" {
+  description = "Route53 zone to create DNS records"
 }
 
 variable "is_public_service" {

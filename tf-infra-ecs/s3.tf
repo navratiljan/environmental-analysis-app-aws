@@ -1,6 +1,8 @@
 # Commented out example ##
 resource "aws_s3_bucket" "alb_logs" {
   bucket = "my-elb-tf-test-bucket"
+
+  force_destroy = true
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "alb_logs" {

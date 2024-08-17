@@ -12,15 +12,16 @@ ecs_app_config = {
     host_port = 80
     container_desired_count = 1
     environment_variables = []
+    ecr_image_tag = "0.0.1"
     sg_inbound_cidr_block = ""
   }
-  ens-fe = {
-    container_cpu = 1
-    container_memory = 256
-    container_port = 80
-    host_port = 80
-    container_desired_count = 1
-    environment_variables = []
-    sg_inbound_cidr_block = ""
-  }
+  # ens-fe = {
+  #   container_cpu = 1
+  #   container_memory = 256
+  #   container_port = 80
+  #   host_port = 80
+  #   container_desired_count = 1
+  #   environment_variables = []
+  #   sg_inbound_cidr_block = ""
+  # }
 }

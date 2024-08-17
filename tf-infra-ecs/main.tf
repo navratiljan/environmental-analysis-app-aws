@@ -35,7 +35,7 @@ module "ecs-apps" {
 
   ## Public expose via ALB (if is_public_service is false, below options are irrelevant)
   is_public_service = true
-  base_dns_name = "navaws.ceacpoc.cloud" # fqdn is <application-name>.navaws.ceacpoc.cloud
+  aws_route53_zone = aws_route53_zone.primary
   alb_arn = aws_lb.public-lb.arn
   public_alb_dnsname = aws_lb.public-lb.dns_name
 

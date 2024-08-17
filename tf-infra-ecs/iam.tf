@@ -117,3 +117,62 @@ resource "aws_iam_role_policy_attachment" "quicksight_policy_attachment" {
   role       = aws_iam_role.ecs_task_role.name
   policy_arn = aws_iam_policy.quicksight_policy.arn
 }
+
+
+## Glue Catalog Table ## 
+resource "aws_iam_role" "glue_data_quality_role" {
+  name               = "glue-data-quality-role"
+  assume_role_policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "glue.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+        },
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "scheduler.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+        }
+    ]
+} 
+EOF
+}
+
+
+resource "aws_iam_policy" "glue_data_quality_policy" {
+  name        = "glue-data-quality-policy"
+  policy      = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": "glue:*",
+            "Resource": "*",
+            "Effect": "Allow"
+        },
+        {
+            "Action": "cloudwatch:PutMetricData",
+            "Resource": "*",
+            "Effect": "Allow"
+        },
+        {
+            "Action": ["s3:GetObject", "s3:PutObject"],
+            "Resource": "*",
+            "Effect": "Allow"
+        }
+    ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "glue_data_quality_policy_attachment" {
+  role       = aws_iam_role.glue_data_quality_role.name
+  policy_arn = aws_iam_policy.glue_data_quality_policy.arn
+}
