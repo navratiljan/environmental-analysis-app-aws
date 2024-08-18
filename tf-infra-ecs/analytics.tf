@@ -109,7 +109,7 @@ resource "aws_scheduler_schedule" "example" {
   schedule_expression = "rate(5 minutes)"
 
   target {
-    arn      = "arn:aws:scheduler:::aws-sdk:glue:StartDataQualityRulesetEvaluationRun"
+    arn      = "arn:aws:scheduler:::aws-sdk:glue:startDataQualityRulesetEvaluationRun"
     role_arn = aws_iam_role.glue_data_quality_role.arn
 
     dead_letter_config {
