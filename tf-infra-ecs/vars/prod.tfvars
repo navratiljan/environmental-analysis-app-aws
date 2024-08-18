@@ -11,7 +11,16 @@ ecs_app_config = {
     container_port = 80
     host_port = 80
     container_desired_count = 1
-    environment_variables = []
+    environment_variables = [
+        {
+        name  = "S3_DATASETS_BUCKET_NAME"
+        value = "environmental-app-dataset-bucket"
+        },
+        {
+        name  = "DYNAMODB_TABLE"
+        value = "table-environmental-dataset-fastapi"
+      }
+    ]
     ecr_image_tag = "0.0.1"
     sg_inbound_cidr_block = ""
   }

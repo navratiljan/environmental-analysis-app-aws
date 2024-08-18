@@ -158,12 +158,37 @@ resource "aws_iam_policy" "glue_data_quality_policy" {
             "Effect": "Allow"
         },
         {
-            "Action": "cloudwatch:PutMetricData",
+            "Action": "cloudwatch:*",
             "Resource": "*",
             "Effect": "Allow"
         },
         {
-            "Action": ["s3:GetObject", "s3:PutObject"],
+            "Action": "s3:*",
+            "Resource": "*",
+            "Effect": "Allow"
+        },
+        {
+            "Action": "logs:*",
+            "Resource": "*",
+            "Effect": "Allow"
+        },
+        {
+            "Action": "sqs:*",
+            "Resource": "*",
+            "Effect": "Allow"
+        },
+        {
+            "Action": "events:*",
+            "Resource": "*",
+            "Effect": "Allow"
+        },
+        {
+            "Action": "scheduler:*",
+            "Resource": "*",
+            "Effect": "Allow"
+        },
+        {
+            "Action": "schemas:*",
             "Resource": "*",
             "Effect": "Allow"
         }
