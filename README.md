@@ -15,6 +15,8 @@ set -o allexport && source .env.development && set +o allexport
 1. build the image 
 ```bash
 docker build -f ./Dockerfile-dev -t awsfastapi .
+docker tag awsfastapi:latest 812222239604.dkr.ecr.eu-central-1.amazonaws.com/ens-api:<yourtag>
+docker push 812222239604.dkr.ecr.eu-central-1.amazonaws.com/ens-api:<yourtag>
 ```
 2. run the image, including AWS creds and mount your directory to refresh code inside container
 ```bash

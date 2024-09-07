@@ -8,24 +8,6 @@ resource "aws_kms_key" "example" {
   description             = "Athena KMS Key"
 }
 
-resource "aws_athena_workgroup" "example" {
-  name = "envstats-workgroup"
-
-  configuration {
-    enforce_workgroup_configuration    = true
-    publish_cloudwatch_metrics_enabled = true
-
-    result_configuration {
-      output_location = "s3://environmental-app-athena-results"
-
-      encryption_configuration {
-        encryption_option = "SSE_KMS"
-        kms_key_arn       = aws_kms_key.example.arn
-      }
-    }
-  }
-}
-
 resource "aws_glue_catalog_table" "aws_glue_catalog_table" {
   name          = "ese-api8"
   database_name = aws_athena_database.example.name
@@ -98,7 +80,7 @@ resource "aws_sqs_queue" "example" {
 }
 
 resource "aws_scheduler_schedule" "example" {
-  name       = "my-schedule"
+  name       = "schedule-data-quality-rules-glue"
   group_name = "default"
 
   flexible_time_window {
@@ -106,7 +88,7 @@ resource "aws_scheduler_schedule" "example" {
   }
 
 
-  schedule_expression = "rate(5 minutes)"
+  schedule_expression = "rate(2 hours)"
 
   target {
     arn      = "arn:aws:scheduler:::aws-sdk:glue:startDataQualityRulesetEvaluationRun"
@@ -126,9 +108,23 @@ resource "aws_scheduler_schedule" "example" {
       },
       "Role": "arn:aws:iam::812222239604:role/glue-data-quality-role",
       "RulesetNames": [
-        "initial-test"
+        "${aws_glue_data_quality_ruleset.example.name}"
       ]
     }
     EOF
   }
+}
+
+### QUICKSIGHT ###
+resource "aws_quicksight_data_source" "default" {
+  data_source_id = "${local.infix}-id"
+  name           = "${local.infix}-datasource"
+
+  parameters {
+    athena {
+      work_group = "primary"
+    }
+  }
+
+  type = "ATHENA"
 }

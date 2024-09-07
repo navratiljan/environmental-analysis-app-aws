@@ -61,6 +61,11 @@ resource "aws_iam_policy" "ecspolicy" {
             "ssmmessages:OpenDataChannel"
        ],
       "Resource": "*"
+      },
+       {
+       "Effect": "Allow",
+       "Action": "quicksight:*",
+      "Resource": "*"
       }
    ]
 }
@@ -189,6 +194,11 @@ resource "aws_iam_policy" "glue_data_quality_policy" {
         },
         {
             "Action": "schemas:*",
+            "Resource": "*",
+            "Effect": "Allow"
+        },
+        {
+            "Action": "iam:PassRole",
             "Resource": "*",
             "Effect": "Allow"
         }
