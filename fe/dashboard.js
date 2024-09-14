@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Function to handle the dashboard URL retrieval
     function fetchDashboardURL() {
-        const apiUrl = 'http://localhost:8080/environemental-data/dashboard-embedded-url';
+        const apiUrl = 'https://envstats.navaws.ceacpoc.cloud/environemental-data/dashboard-embedded-url';
         fetch(apiUrl, { method: 'GET', headers: { 'Accept': 'application/json' } })
          .then(response => response.json())
          .then(data => {

@@ -1,1 +1,0 @@
-# Empty main.tf, but core components like VPC can be here
