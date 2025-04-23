@@ -1,0 +1,41 @@
+host: dev.ddev.dgplatform.net
+
+production: false
+version: ''
+repository: 849950867205.dkr.ecr.eu-south-1.amazonaws.com/dgp-docker-dev
+
+eapi:
+  metadata:
+    name: environmental-api
+    config: environmental-api-config
+  config:
+    log_level: 'info'
+  port: 3000
+  targetPort: 3000
+  replicas: 2
+  image:
+    name: environmental-api
+    pullPolicy: IfNotPresent
+    tag: ''
+  hpa_config:
+    minReplicas: 2
+    maxReplicas: 15
+    cpu_averageUtilization: 60
+    memory_averageUtilization: 60
+    stabilizationWindowSeconds: 60
+  resources:
+    requests_memory: '400Mi'
+    requests_cpu: '200m'
+    limits_memory: '400Mi'
+    limits_cpu: '200m'
+   
+  
+
+nodeSelector:
+  something: "true"
+tolerations:
+- key: "something"
+  operator: "Equal"
+  value: "true"
+
+maxSkew: 1 # maxSkew is the maximum allowed difference in the number of pods in any two availability zones

@@ -1,0 +1,28 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ .Values.eapi.metadata.name }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ .Values.eapi.metadata.name }}
+  minReplicas: {{ .Values.eapi.hpa_config.minReplicas }}
+  maxReplicas: {{ .Values.eapi.hpa_config.maxReplicas }}
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: {{ .Values.eapi.hpa_config.stabilizationWindowSeconds }}
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.eapi.hpa_config.cpu_averageUtilization }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.eapi.hpa_config.memory_averageUtilization }}
+  

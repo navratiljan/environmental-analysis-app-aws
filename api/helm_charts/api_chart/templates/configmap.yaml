@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{.Values.eapi.metadata.config}}
+  labels:
+    app: {{.Values.eapi.metadata.name}}
+data:
+  LOG_LEVEL: '{{.Values.eapi.config.log_level}}'

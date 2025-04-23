@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.eapi.metadata.name}}
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: {{.Values.eapi.replicas}}
+  selector:
+    matchLabels:
+      app: {{.Values.eapi.metadata.name}}
+  template:
+    metadata:
+      labels:
+        app: {{.Values.eapi.metadata.name}}
+    spec:
+{{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+{{- end }}
+{{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 8 }}
+{{- end }}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - {{.Values.eapi.metadata.name}}
+                topologyKey: topology.kubernetes.io/zone
+      topologySpreadConstraints:
+        - maxSkew: {{.Values.maxSkew}}
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: ScheduleAnyway
+      containers:
+        - name: {{.Values.eapi.metadata.name}}
+          image:
+            '{{ .Values.repository }}/{{ .Values.eapi.image.name }}:{{ .Values.eapi.image.tag | default .Values.version }}'
+          resources:
+            requests:
+              memory: '{{ .Values.eapi.resources.requests_memory }}'
+              cpu: '{{ .Values.eapi.resources.requests_cpu }}'
+            limits:
+              memory: '{{ .Values.eapi.resources.limits_memory }}'
+              cpu: '{{ .Values.eapi.resources.limits_cpu }}'
+          imagePullPolicy: {{.Values.eapi.image.pullPolicy}}
+          ports:
+            - containerPort: {{.Values.eapi.targetPort}}
+          envFrom:
+            - configMapRef:
+                name: {{.Values.eapi.metadata.config}}
