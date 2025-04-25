@@ -1,8 +1,8 @@
-host: dev.ddev.dgplatform.net
+host: dummy-domain.com
 
 production: false
 version: ''
-repository: 849950867205.dkr.ecr.eu-south-1.amazonaws.com/dgp-docker-dev
+repository: 812222239604.dkr.ecr.eu-central-1.amazonaws.com
 
 eapi:
   metadata:
@@ -14,9 +14,9 @@ eapi:
   targetPort: 3000
   replicas: 2
   image:
-    name: environmental-api
+    name: ens-api
     pullPolicy: IfNotPresent
-    tag: ''
+    tag: 'v1.0.1'
   hpa_config:
     minReplicas: 2
     maxReplicas: 15
@@ -32,10 +32,10 @@ eapi:
   
 
 nodeSelector:
-  karpenter.sh/capacity-type: "on-demand"
+  karpenter.sh/capacity-type: "spot"
 tolerations:
 - key: "karpenter.sh/capacity-type"
   operator: "Equal"
-  value: "on-demand"
+  value: "spot"
 
 maxSkew: 1 # maxSkew is the maximum allowed difference in the number of pods in any two availability zones
