@@ -32,10 +32,10 @@ eapi:
   
 
 nodeSelector:
-  something: "true"
+  karpenter.sh/capacity-type: "on-demand"
 tolerations:
-- key: "something"
+- key: "karpenter.sh/capacity-type"
   operator: "Equal"
-  value: "true"
+  value: "on-demand"
 
 maxSkew: 1 # maxSkew is the maximum allowed difference in the number of pods in any two availability zones
