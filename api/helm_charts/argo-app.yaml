@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1  
+kind: Application  
+metadata:  
+  name: environmental-api
+spec:  
+  project: default  
+  source:  
+    repoURL: 'https://github.com/navratiljan/environmental-analysis-app-aws.git'  
+    targetRevision: feature/refactor-tf-structure
+    path: api/helm_charts/api_chart
+    helm:
+      releaseName: environmental-api
+      valueFiles:
+        - values.yaml
+  destination:  
+    server: 'https://kubernetes.default.svc'
+    namespace: environmental-api
+  syncPolicy:  
+    automated:  
+      prune: true
