@@ -12,7 +12,7 @@ eapi:
     log_level: 'info'
   port: 3000
   targetPort: 3000
-  replicas: 2
+  replicas: 3
   image:
     name: ens-api
     pullPolicy: IfNotPresent
