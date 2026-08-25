@@ -10,13 +10,24 @@ uvicorn app.main:app --reload
 set -o allexport && source .env.development && set +o allexport
 ```
 
+## Authorize with ECR
+```bash
+aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 435472314818.dkr.ecr.eu-central-1.amazonaws.com
+```
 ## Local startup in docker
-
-1. build the image 
+1. build the image for FE and API
+**API**
 ```bash
 docker build -f ./Dockerfile-dev -t awsfastapi .
 docker tag awsfastapi:latest 812222239604.dkr.ecr.eu-central-1.amazonaws.com/ens-api:<yourtag>
 docker push 812222239604.dkr.ecr.eu-central-1.amazonaws.com/ens-api:<yourtag>
+```
+
+**FE**
+```bash
+docker build -f ./Dockerfile -t awsfastapife .
+docker tag awsfastapife:latest 812222239604.dkr.ecr.eu-central-1.amazonaws.com/ens-fe:<yourtag>
+docker push 812222239604.dkr.ecr.eu-central-1.amazonaws.com/ens-fe:<yourtag>
 ```
 2. run the image, including AWS creds and mount your directory to refresh code inside container
 ```bash
